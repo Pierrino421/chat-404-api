@@ -13,8 +13,6 @@ try:
     
 except Exception as e:
     print(f"Erreur lors du chargement du modèle GPT-2 Français. Fallback vers GPT-2 standard : {e}")
-    # Fallback vers le modèle initial en cas d'échec
-    generator = pipeline('text-generation', model='gpt2')
 # --- Briques de Délire Personnalisées ---
 DEVIATIONS_FINALES = [
     # --- Philosophie / Existence ---
