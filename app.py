@@ -7,12 +7,10 @@ from transformers import pipeline
 app = Flask(__name__)
 CORS(app) 
 
-try:
-    generator = pipeline("text-generation", model="dbddv01/gpt2-french-small")
-    print("Modèle GPT-2 Français ('antoil/gpt2-small-french') chargé avec succès.")
+
+generator = pipeline("text-generation", model="dbddv01/gpt2-french-small")
+print("Modèle GPT-2 Français ('antoil/gpt2-small-french') chargé avec succès.")
     
-except Exception as e:
-    print(f"Erreur lors du chargement du modèle GPT-2 Français. Fallback vers GPT-2 standard : {e}")
 # --- Briques de Délire Personnalisées ---
 DEVIATIONS_FINALES = [
     # --- Philosophie / Existence ---
