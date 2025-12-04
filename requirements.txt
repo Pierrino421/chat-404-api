@@ -1,0 +1,4 @@
+Flask
+Flask-CORS
+torch                  # Librairie de Deep Learning (PyTorch)
+transformers           # Librairie pour utiliser les modèles pré-entraînés (NLP)
