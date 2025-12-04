@@ -9,15 +9,13 @@ app = Flask(__name__)
 CORS(app) 
 
 try:
-    device = 0 if torch.cuda.is_available() else -1 
-    
     generator = pipeline("text-generation", model="dbddv01/gpt2-french-small")
     print("Modèle GPT-2 Français ('antoil/gpt2-small-french') chargé avec succès.")
     
 except Exception as e:
     print(f"Erreur lors du chargement du modèle GPT-2 Français. Fallback vers GPT-2 standard : {e}")
     # Fallback vers le modèle initial en cas d'échec
-    generator = pipeline('text-generation', model='gpt2', device=device)
+    generator = pipeline('text-generation', model='gpt2')
     
 # --- Briques de Délire Personnalisées ---
 DEVIATIONS_FINALES = [
