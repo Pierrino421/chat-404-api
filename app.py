@@ -10,10 +10,9 @@ CORS(app)
 
 
 generator = pipeline("text-generation", model="FrankL/storytellerLM-v0.1")
-tokenizer = generator.tokenizer
-if tokenizer.pad_token is None:
-    tokenizer.add_special_tokens({'pad_token': '[PAD]'})
-    generator.model.resize_token_embeddings(len(tokenizer))
+# if tokenizer.pad_token is None:
+#     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+#     generator.model.resize_token_embeddings(len(tokenizer))
 print("Modèle GPT-2 Français ('antoil/gpt2-small-french') chargé avec succès.")
     
 # --- Briques de Délire Personnalisées ---
