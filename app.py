@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import random
-import re 
 import torch
 from transformers import pipeline
 
@@ -9,7 +8,7 @@ app = Flask(__name__)
 CORS(app) 
 
 
-generator = pipeline("text-generation", model="Qwen/Qwen2.5-0.5B-Instruct")
+generator = pipeline("text-generation", model="FrankL/storytellerLM-v0.1")
 tokenizer = generator.tokenizer
 if tokenizer.pad_token is None:
     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
@@ -62,16 +61,8 @@ def apply_absurd_filter(translated_text, user_input):
 
     # 1. Nettoyage de la réponse brute (qui devrait être en français maintenant)
     cleaned_text = translated_text.replace(user_input, '', 1).strip()
-    sentences = re.split(r'([.!?])', cleaned_text, 1)
-
-    if len(sentences) < 3:
-        first_sentence = cleaned_text.split('\n')[0].strip()
-    else:
-        first_sentence = (sentences[0] + sentences[1]).strip()
-        
-    if len(first_sentence) < 5:
-        first_sentence = "Une observation technique s'impose."
-
+    sentences = cleaned_text.split('.')
+    first_sentence = sentences[0].strip() + '.'
     # 2. Ajoute une Déviation Finale aléatoire
     deviation = random.choice(DEVIATIONS_FINALES)
     
