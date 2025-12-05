@@ -2,14 +2,18 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import random
 import re 
-
+import torch
 from transformers import pipeline
 
 app = Flask(__name__)
 CORS(app) 
 
 
-generator = pipeline("text-generation", model="dbddv01/gpt2-french-small")
+generator = pipeline("text-generation", model="Qwen/Qwen2.5-0.5B-Instruct")
+tokenizer = generator.tokenizer
+if tokenizer.pad_token is None:
+    tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+    generator.model.resize_token_embeddings(len(tokenizer))
 print("Modèle GPT-2 Français ('antoil/gpt2-small-french') chargé avec succès.")
     
 # --- Briques de Délire Personnalisées ---
@@ -92,14 +96,14 @@ def chat():
         #  Génération de la réponse (Inférence du Modèle)
         # Ajout du paramètre language='fr' si le modèle le supporte (ici, on s'appuie sur le finetuning)
         generated_result = generator(
-            user_question, 
-            max_length=80,
-            num_return_sequences=1,
-            do_sample=True,
-            temperature=GENERATION_TEMPERATURE,
-            top_k=50,
-            pad_token_id=generator.tokenizer.eos_token_id,
-        )
+    user_question,
+    max_new_tokens=60,
+    do_sample=True,
+    temperature=GENERATION_TEMPERATURE,
+    top_k=20
+)
+
+
         
         generated_text = generated_result[0]['generated_text']
         
