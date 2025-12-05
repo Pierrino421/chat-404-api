@@ -3,6 +3,7 @@ from flask_cors import CORS
 import random
 import torch
 from transformers import pipeline
+from deep_translator import GoogleTranslator
 
 app = Flask(__name__)
 CORS(app) 
@@ -65,9 +66,12 @@ def apply_absurd_filter(translated_text, user_input):
     first_sentence = sentences[0].strip() + '.'
     # 2. Ajoute une Déviation Finale aléatoire
     deviation = random.choice(DEVIATIONS_FINALES)
-    
+    try:
+        translated_sentence = GoogleTranslator(source="auto", target="fr").translate(first_sentence)
+    except:
+        translated_sentence = first_sentence
     # 3. Assemblage du délire final
-    final_absurd_response = f"{first_sentence} Mais, {deviation}"
+    final_absurd_response = f"{translated_sentence} Mais, {deviation}"
     
     return final_absurd_response
 
